@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:store_and_lock/screens/auth/passcode_scren.dart';
 import 'package:store_and_lock/screens/home_screen.dart';
 import 'package:store_and_lock/services/auth_service.dart';
 import 'dart:async';
@@ -70,7 +71,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return isEmailVerified
-        ? const HomeScreen()
+        ? const PasscodeScreen()
         : Scaffold(
             body: Center(
               child: Stack(

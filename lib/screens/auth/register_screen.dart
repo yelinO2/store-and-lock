@@ -112,14 +112,14 @@ class _SignUpState extends State<SignUp> {
                               const Spacer(),
                               const Center(
                                 child: ModifiedText(
-                                  text: "Chit-Chat with your friends",
+                                  text: "Secure your files",
                                   size: 15,
                                   color: Colors.white,
                                 ),
                               ),
                               const Spacer(),
                               TextFormField(
-                                // controller: email,
+                              style: const TextStyle(color: Colors.white),
                                 decoration: textInputDecoration.copyWith(
                                   labelText: 'Please enter your username',
                                   prefixIcon: Icon(
@@ -143,7 +143,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                               const Spacer(),
                               TextFormField(
-                                // controller: email,
+                                style: const TextStyle(color: Colors.white),
                                 decoration: textInputDecoration.copyWith(
                                   labelText: 'Please enter your email address',
                                   prefixIcon: Icon(
@@ -167,7 +167,8 @@ class _SignUpState extends State<SignUp> {
                               ),
                               const Spacer(),
                               TextFormField(
-                                // controller: password,
+                                style: const TextStyle(color: Colors.white),
+                              
                                 obscureText: hidePassword,
                                 decoration: textInputDecoration.copyWith(
                                   prefixIcon: Icon(
@@ -220,7 +221,7 @@ class _SignUpState extends State<SignUp> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const ModifiedText(
-                                    text: 'Already in Chit-Chat?',
+                                    text: 'Already have an account?',
                                     color: Colors.white,
                                   ),
                                   TextButton(

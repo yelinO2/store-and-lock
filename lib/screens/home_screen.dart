@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:store_and_lock/screens/audio/upload_audio.dart';
+import 'package:store_and_lock/screens/doc/upload_doc.dart';
+import 'package:store_and_lock/screens/image/upload_image.dart';
+import 'package:store_and_lock/screens/video/upload_vd.dart';
+import 'package:store_and_lock/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               children: [
                 InkWell(
+                  onTap: () => nextScreen(context, const UploadImage()),
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.all(10),
@@ -50,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 InkWell(
+                  onTap: () => nextScreen(context, const UploadVideo()),
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.all(10),
@@ -61,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 InkWell(
+                  onTap: () => nextScreen(context, const UploadAudio()),
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.all(10),
@@ -73,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    print('doc');
+                    nextScreen(context, const UploadDoc());
                   },
                   child: Container(
                     padding: const EdgeInsets.all(15),

@@ -112,7 +112,7 @@ class _LoginState extends State<Login> {
                               ),
                               const Spacer(),
                               TextFormField(
-                                // controller: email,
+                                style: const TextStyle(color: Colors.white),
                                 decoration: textInputDecoration.copyWith(
                                   labelText: 'Please enter your email address',
                                   prefixIcon: Icon(
@@ -136,7 +136,7 @@ class _LoginState extends State<Login> {
                               ),
                               const Spacer(),
                               TextFormField(
-                                // controller: password,
+                                style: const TextStyle(color: Colors.white),
                                 obscureText: hidePassword,
                                 decoration: textInputDecoration.copyWith(
                                   prefixIcon: Icon(
