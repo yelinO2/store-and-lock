@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "500882680207",
+    "project_id": "file-locker-6812e",
+    "storage_bucket": "file-locker-6812e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500882680207:android:7af56d031304b738dd03fa",
+        "android_client_info": {
+          "package_name": "com.example.store_and_lock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500882680207-5e6e0gvefd4hksa60hg17eok5kh4uh0m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuxmx8knCQCaOqXN6I4IEGc0-JYJGMkpc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500882680207-5e6e0gvefd4hksa60hg17eok5kh4uh0m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
