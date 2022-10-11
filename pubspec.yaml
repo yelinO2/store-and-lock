@@ -39,6 +39,7 @@ dependencies:
     sdk: flutter
   flutter_screen_lock: ^7.0.4
   google_fonts: ^3.0.1
+  path: ^1.8.2
   shared_preferences: ^2.0.15
 
 dev_dependencies:

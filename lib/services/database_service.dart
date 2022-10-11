@@ -8,6 +8,8 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
 
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
   Future savingUserData(
     String userName,
     String email,
@@ -26,12 +28,19 @@ class DatabaseService {
     return snapshot;
   }
 
-  Future uploadFile(String uid, String path, dynamic file) async {
+  Future uploadFile(String uid, String path, dynamic file, String collection) async {
     final postID = DateTime.now().microsecondsSinceEpoch.toString();
+    String? downloadURL;
     Reference ref = FirebaseStorage.instance
         .ref()
         .child('$uid/$path')
         .child('post_$postID');
     await ref.putFile(file);
+    downloadURL = await ref.getDownloadURL();
+    await firebaseFirestore
+        .collection('users')
+        .doc(uid)
+        .collection(collection)
+        .add({'downloadURL': downloadURL});
   }
 }

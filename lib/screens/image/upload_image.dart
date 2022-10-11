@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:store_and_lock/services/upload_files.dart';
+import 'package:store_and_lock/widgets/widgets.dart';
 
 class UploadImage extends StatefulWidget {
   const UploadImage({super.key});
@@ -14,7 +16,9 @@ class _UploadImageState extends State<UploadImage> {
       appBar: AppBar(title: const Text('Images')),
       body: noFileWidget(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          nextScreen(context, const UploadFile());
+        },
         child: const Icon(
           Icons.add_photo_alternate_rounded,
           size: 30,
