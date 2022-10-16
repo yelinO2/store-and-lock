@@ -65,6 +65,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
+          brightness: Brightness.dark,
           primaryColor: Colors.green,
           textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
       home: isSignedIn ? const PasscodeScreen() : const SignUp(),

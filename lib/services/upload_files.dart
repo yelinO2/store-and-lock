@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path/path.dart' as Path;
+
 import 'package:store_and_lock/services/database_service.dart';
 
 class UploadFile extends StatefulWidget {
@@ -28,7 +28,10 @@ class _UploadFileState extends State<UploadFile> {
         actions: [
           TextButton(
             onPressed: () {
-              uploadImage();
+              setState(() {
+                uploading = true;
+              });
+              uploadImage().whenComplete(() => Navigator.of(context).pop());
             },
             child: const Text(
               'Upload',
@@ -102,13 +105,15 @@ class _UploadFileState extends State<UploadFile> {
   Future uploadImage() async {
     int i = 1;
     final uid = FirebaseAuth.instance.currentUser!.uid;
-
+    const path = 'images';
     for (var file in files) {
       setState(() {
         val = i / files.length;
       });
-      final path = Path.basename(file.path).toString();
-      DatabaseService().uploadFile(uid, path, file, collection);
+
+      DatabaseService()
+          .uploadFile(uid, path, file, collection)
+          .whenComplete(() => i++);
     }
   }
 }

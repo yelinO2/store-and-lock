@@ -28,7 +28,8 @@ class DatabaseService {
     return snapshot;
   }
 
-  Future uploadFile(String uid, String path, dynamic file, String collection) async {
+  Future uploadFile(
+      String uid, String path, dynamic file, String collection) async {
     final postID = DateTime.now().microsecondsSinceEpoch.toString();
     String? downloadURL;
     Reference ref = FirebaseStorage.instance
@@ -42,5 +43,9 @@ class DatabaseService {
         .doc(uid)
         .collection(collection)
         .add({'downloadURL': downloadURL});
+  }
+
+  Future getImages(String uid) async {
+    return userCollection.doc(uid).collection('images').snapshots();
   }
 }
