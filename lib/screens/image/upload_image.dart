@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:store_and_lock/screens/image/select_image.dart';
+import 'package:store_and_lock/screens/image/view_image.dart';
 import 'package:store_and_lock/services/database_service.dart';
 
 import 'package:store_and_lock/widgets/widgets.dart';
@@ -67,9 +68,17 @@ class _UploadImageState extends State<UploadImage> {
                 ),
                 itemBuilder: (context, index) {
                   String url = snapshot.data!.docs[index]['downloadURL'];
-                  return Image.network(
-                    url,
-                    fit: BoxFit.cover,
+                  return GestureDetector(
+                    onTap: () {
+                      nextScreen(context, OpenImage(url: url, heroTag: index,));
+                    },
+                    child: Hero(
+                      tag: "image $index",
+                      child: Image.network(
+                        url,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   );
                 },
               ),
