@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:store_and_lock/screens/image/select_image.dart';
 import 'package:store_and_lock/services/database_service.dart';
-import 'package:store_and_lock/services/upload_files.dart';
+
 import 'package:store_and_lock/widgets/widgets.dart';
 
 class UploadImage extends StatefulWidget {
@@ -38,7 +39,7 @@ class _UploadImageState extends State<UploadImage> {
       body: showImages(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          nextScreen(context, const UploadFile());
+          nextScreen(context, const SelectImage());
         },
         child: const Icon(
           Icons.add_photo_alternate_rounded,
@@ -55,7 +56,6 @@ class _UploadImageState extends State<UploadImage> {
           if (!snapshot.hasData) {
             return noFileWidget();
           } else {
-            print(snapshot.data!.docs.length);
             return Container(
               margin: const EdgeInsets.all(3),
               child: GridView.builder(
@@ -87,6 +87,7 @@ class _UploadImageState extends State<UploadImage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GestureDetector(
+              onTap: () => nextScreen(context, const SelectImage()),
               child: const Icon(
                 Icons.add_photo_alternate_outlined,
                 size: 75,

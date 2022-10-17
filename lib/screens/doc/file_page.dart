@@ -6,12 +6,12 @@ import 'package:file_picker/file_picker.dart';
 
 import '../../services/database_service.dart';
 
-class UploadFiles extends StatefulWidget {
+class FilesPage extends StatefulWidget {
   final List<PlatformFile> platformFiles;
   final ValueChanged<PlatformFile> onOpenedFile;
   final String path;
   final String collection;
-  const UploadFiles({
+  const FilesPage({
     super.key,
     required this.platformFiles,
     required this.onOpenedFile,
@@ -20,15 +20,15 @@ class UploadFiles extends StatefulWidget {
   });
 
   @override
-  State<UploadFiles> createState() => _UploadFilesState();
+  State<FilesPage> createState() => _FilesPageState();
 }
 
-class _UploadFilesState extends State<UploadFiles> {
+class _FilesPageState extends State<FilesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Files'),
+        title: const Text('Doc Files'),
         centerTitle: true,
         actions: [
           TextButton(

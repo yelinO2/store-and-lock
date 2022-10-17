@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 InkWell(
-                  onTap: () => nextScreen(context, const UploadVideo()),
+                  onTap: () => nextScreen(context, const UploadVideos()),
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     margin: const EdgeInsets.all(10),

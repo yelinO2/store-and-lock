@@ -1,26 +1,50 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
+import 'package:store_and_lock/services/upload_files.dart';
+import 'package:store_and_lock/widgets/widgets.dart';
 
-class UploadVideo extends StatefulWidget {
-  const UploadVideo({super.key});
+class UploadVideos extends StatefulWidget {
+  const UploadVideos({super.key});
 
   @override
-  State<UploadVideo> createState() => _UploadVideoState();
+  State<UploadVideos> createState() => _UploadVideosState();
 }
 
-class _UploadVideoState extends State<UploadVideo> {
+class _UploadVideosState extends State<UploadVideos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Video Files')),
+      appBar: AppBar(title: const Text('Video files')),
       body: noFileWidget(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          final result = await FilePicker.platform.pickFiles(
+            allowMultiple: true,
+            type: FileType.video,
+          );
+          if (result == null) return;
+          openFiles(result.files);
+        },
         child: const Icon(
           Icons.video_collection_outlined,
           size: 30,
         ),
       ),
     );
+  }
+
+  void openFiles(List<PlatformFile> files) => nextScreen(
+      context,
+      UploadFiles(
+        platformFiles: files,
+        onOpenedFile: openFile,
+        path: "videos",
+        collection: "videos",
+      ));
+
+  void openFile(PlatformFile file) {
+    OpenFile.open(file.path!);
   }
 
   noFileWidget() {
