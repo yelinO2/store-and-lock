@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:store_and_lock/widgets/widgets.dart';
 
@@ -15,9 +13,7 @@ class _FileListState extends State<FileList> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-      
-      },
+      onTap: () {},
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
         child: ListTile(
@@ -36,6 +32,7 @@ class _FileListState extends State<FileList> {
           ),
           title: Text(
             widget.fileName,
+            maxLines: 2,
             style: const TextStyle(
               color: Colors.white,
             ),

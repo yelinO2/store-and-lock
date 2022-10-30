@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
+import 'package:store_and_lock/constant/list_tile.dart';
+import 'package:store_and_lock/services/database_service.dart';
 import 'package:store_and_lock/services/upload_files.dart';
 import 'package:store_and_lock/widgets/widgets.dart';
 
@@ -12,26 +16,51 @@ class UploadAudio extends StatefulWidget {
 }
 
 class _UploadAudioState extends State<UploadAudio> {
+  Stream<QuerySnapshot>? audio;
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+  String collection = 'audio';
+
+  getAudio() {
+    DatabaseService().getFiles(uid, collection).then((value) {
+      setState(() {
+        audio = value;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getAudio();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Audio Files')),
-      body: noFileWidget(),
+      body: showFiles(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final result = await FilePicker.platform.pickFiles(
-            allowMultiple: true,
-            type: FileType.audio,
-          );
-          if (result == null) return;
-          openFiles(result.files);
+        onPressed: () {
+          pickAudio();
         },
-        child: const Icon(
-          Icons.audio_file_rounded,
-          size: 30,
+        child: GestureDetector(
+          onTap: () => pickAudio(),
+          child: const Icon(
+            Icons.audio_file_rounded,
+            size: 30,
+          ),
         ),
       ),
     );
+  }
+
+  Future pickAudio() async {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.audio,
+    );
+    if (result == null) return;
+    openFiles(result.files);
   }
 
   void openFiles(List<PlatformFile> files) => nextScreen(
@@ -66,6 +95,33 @@ class _UploadAudioState extends State<UploadAudio> {
           ],
         ),
       ),
+    );
+  }
+
+  showFiles() {
+    return StreamBuilder(
+      stream: audio,
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data!.docs.isNotEmpty) {
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                String fileName = snapshot.data!.docs[index]['fileName'];
+                return FileList(fileName: fileName);
+              },
+            );
+          } else {
+            return noFileWidget();
+          }
+        } else {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ),
+          );
+        }
+      },
     );
   }
 }
