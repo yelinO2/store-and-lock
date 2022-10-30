@@ -39,10 +39,14 @@ class DatabaseService {
         .collection('users')
         .doc(uid)
         .collection(collection)
-        .add({'downloadURL': downloadURL});
+        .add({'fileName': fileName, 'downloadURL': downloadURL});
   }
 
   Future getImages(String uid) async {
     return userCollection.doc(uid).collection("images").snapshots();
+  }
+
+  Future getFiles(String uid, String collection) async {
+    return userCollection.doc(uid).collection(collection).snapshots();
   }
 }

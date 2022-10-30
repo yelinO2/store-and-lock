@@ -68,3 +68,63 @@ var chatTextInputDecoration = InputDecoration(
   filled: true,
   fillColor: Colors.grey,
 );
+
+Color getColor(String word) {
+  Color color;
+  if (word == 'a') {
+    color = Colors.red;
+  } else if (word == 'b') {
+    color = Colors.yellow;
+  } else if (word == 'c') {
+    color = Colors.green;
+  } else if (word == 'd') {
+    color = Colors.blue;
+  } else if (word == 'e') {
+    color = Colors.purple;
+  } else if (word == 'f') {
+    color = Colors.pink;
+  } else if (word == 'g') {
+    color = Colors.amber;
+  } else if (word == 'h') {
+    color = Colors.orange;
+  } else if (word == 'i') {
+    color = Colors.cyanAccent;
+  } else if (word == 'j') {
+    color = Colors.teal;
+  } else if (word == 'k') {
+    color = Colors.limeAccent;
+  } else if (word == 'l') {
+    color = Colors.indigoAccent;
+  } else if (word == 'm') {
+    color = Colors.blueGrey;
+  } else if (word == 'n') {
+    color = Colors.lightGreen;
+  } else if (word == 'o') {
+    color = Colors.lightBlue;
+  } else if (word == 'p') {
+    color = Colors.purpleAccent;
+  } else if (word == 'q') {
+    color = Colors.blueGrey;
+  } else if (word == 'r') {
+    color = Colors.lightBlue;
+  } else if (word == 's') {
+    color = Colors.deepPurpleAccent;
+  } else if (word == 't') {
+    color = Colors.limeAccent;
+  } else if (word == 'u') {
+    color = Colors.orangeAccent;
+  } else if (word == 'v') {
+    color = Colors.blue;
+  } else if (word == 'w') {
+    color = Colors.teal;
+  } else if (word == 'x') {
+    color = Colors.blueAccent;
+  } else if (word == 'y') {
+    color = Colors.redAccent;
+  } else if (word == 'z') {
+    color = Colors.pinkAccent;
+  } else {
+    color = Colors.black;
+  }
+  return color;
+}

@@ -54,34 +54,46 @@ class _UploadImageState extends State<UploadImage> {
     return StreamBuilder(
         stream: images,
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return noFileWidget();
-          } else {
-            return Container(
-              margin: const EdgeInsets.all(3),
-              child: GridView.builder(
-                itemCount: snapshot.data!.docs.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: 3,
-                  crossAxisSpacing: 3,
-                  crossAxisCount: 3,
-                ),
-                itemBuilder: (context, index) {
-                  String url = snapshot.data!.docs[index]['downloadURL'];
-                  return GestureDetector(
-                    onTap: () {
-                      nextScreen(context, OpenImage(url: url, heroTag: index,));
-                    },
-                    child: Hero(
-                      tag: "image $index",
-                      child: Image.network(
-                        url,
-                        fit: BoxFit.cover,
+          if (snapshot.hasData) {
+            if (snapshot.data!.docs.isNotEmpty) {
+              return Container(
+                margin: const EdgeInsets.all(3),
+                child: GridView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 3,
+                    crossAxisSpacing: 3,
+                    crossAxisCount: 3,
+                  ),
+                  itemBuilder: (context, index) {
+                    String url = snapshot.data!.docs[index]['downloadURL'];
+                    return GestureDetector(
+                      onTap: () {
+                        nextScreen(
+                            context,
+                            OpenImage(
+                              url: url,
+                              heroTag: index,
+                            ));
+                      },
+                      child: Hero(
+                        tag: "image $index",
+                        child: Image.network(
+                          url,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
+              );
+            } else {
+              return noFileWidget();
+            }
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor),
             );
           }
         });

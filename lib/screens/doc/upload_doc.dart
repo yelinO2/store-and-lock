@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:open_file/open_file.dart';
+import 'package:store_and_lock/constant/list_tile.dart';
 import 'package:store_and_lock/widgets/widgets.dart';
-
-import 'file_page.dart';
+import 'package:store_and_lock/services/upload_files.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:store_and_lock/services/database_service.dart';
 
 class UploadDoc extends StatefulWidget {
   const UploadDoc({super.key});
@@ -13,46 +16,97 @@ class UploadDoc extends StatefulWidget {
 }
 
 class _UploadDocState extends State<UploadDoc> {
+  Stream<QuerySnapshot>? docs;
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+  String collection = 'Documents';
+
+  getDoc() {
+    DatabaseService().getFiles(uid, collection).then((value) {
+      setState(() {
+        docs = value;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getDoc();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
+    return Scaffold(
       appBar: AppBar(title: const Text('Documents')),
-      body: noFileWidget(),
+      body: showDocs(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final result = await FilePicker.platform.pickFiles(
-            allowMultiple: true,
-            type: FileType.custom,
-            allowedExtensions: [
-              "pdf",
-              "doc",
-              "docx",
-              "html",
-              "htm",
-              "xls",
-              "xlsx",
-              "txt",
-              "ppt",
-              "pptx",
-              "odp",
-              "key",
-            ],
-          );
-          if (result == null) return;
-
-          openFiles(result.files);
+        onPressed: () {
+          pickFiles();
         },
-        child: const Icon(
-          Icons.file_upload_rounded,
-          size: 30,
+        child: GestureDetector(
+          onTap: () => pickFiles(),
+          child: const Icon(
+            Icons.file_upload_rounded,
+            size: 30,
+          ),
         ),
       ),
     );
   }
 
+  showDocs() {
+    return StreamBuilder(
+        stream: docs,
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data!.docs.isNotEmpty) {
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  String docName = snapshot.data!.docs[index]['fileName'];
+                  return FileList(fileName: docName);
+                },
+              );
+            } else {
+              return noFileWidget();
+            }
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              ),
+            );
+          }
+        });
+  }
+
+  Future pickFiles() async {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: [
+        "pdf",
+        "doc",
+        "docx",
+        "html",
+        "htm",
+        "xls",
+        "xlsx",
+        "txt",
+        "ppt",
+        "pptx",
+        "odp",
+        "key",
+      ],
+    );
+    if (result == null) return;
+
+    openFiles(result.files);
+  }
+
   void openFiles(List<PlatformFile> files) => nextScreen(
       context,
-      FilesPage(
+      UploadFiles(
         platformFiles: files,
         onOpenedFile: openFile,
         path: "Documents",
