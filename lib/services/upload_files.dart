@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:store_and_lock/widgets/widgets.dart';
 
 import '../../services/database_service.dart';
 
@@ -24,6 +26,7 @@ class UploadFiles extends StatefulWidget {
 }
 
 class _UploadFilesState extends State<UploadFiles> {
+  bool upload = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +35,12 @@ class _UploadFilesState extends State<UploadFiles> {
         centerTitle: true,
         actions: [
           TextButton(
-            onPressed: () => uploadFiles(widget.platformFiles),
+            onPressed: () {
+              uploadFiles(widget.platformFiles);
+              setState(() {
+                upload = true;
+              });
+            },
             child: const Text(
               "Upload",
               style: TextStyle(color: Colors.white),
@@ -40,21 +48,36 @@ class _UploadFilesState extends State<UploadFiles> {
           ),
         ],
       ),
-      body: Center(
-        child: GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-          ),
-          itemCount: widget.platformFiles.length,
-          itemBuilder: (context, index) {
-            final platformFile = widget.platformFiles[index];
+      body: Stack(
+        children: [
+          GridView.builder(
+            padding: const EdgeInsets.all(16),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+            ),
+            itemCount: widget.platformFiles.length,
+            itemBuilder: (context, index) {
+              final platformFile = widget.platformFiles[index];
 
-            return buildFile(platformFile);
-          },
-        ),
+              return buildFile(platformFile);
+            },
+          ),
+          upload
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      uploadSpinkit,
+                      SizedBox(height: 10),
+                      uploadingText,
+                    ],
+                  ),
+                )
+              : Container(),
+        ],
       ),
     );
   }
@@ -65,7 +88,6 @@ class _UploadFilesState extends State<UploadFiles> {
     final fileSize =
         mb >= 1 ? '${mb.toStringAsFixed(2)} MB' : '${kb.toStringAsFixed(2)} KB';
     final extension = file.extension ?? 'none';
-    // final color = getColor(extension);
 
     return InkWell(
       onTap: () => widget.onOpenedFile(file),
@@ -121,13 +143,20 @@ class _UploadFilesState extends State<UploadFiles> {
     String collection = widget.collection;
     for (var platformFile in platformFiles) {
       final file = File(platformFile.path!);
-      DatabaseService().uploadFile(
+      DatabaseService()
+          .uploadFile(
         uid,
         path,
         file,
         collection,
         platformFile.name,
-      );
+      )
+          .whenComplete(() {
+        setState(() {
+          upload = false;
+        });
+        showSnackBar(context, Colors.greenAccent, "Upload Complete");
+      });
     }
   }
 }

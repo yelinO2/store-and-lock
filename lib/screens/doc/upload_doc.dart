@@ -73,10 +73,8 @@ class _UploadDocState extends State<UploadDoc> {
               return noFileWidget();
             }
           } else {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
-              ),
+            return const Center(
+              child: loadingSpinkit
             );
           }
         });

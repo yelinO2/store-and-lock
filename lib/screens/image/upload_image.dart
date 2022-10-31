@@ -91,9 +91,8 @@ class _UploadImageState extends State<UploadImage> {
               return noFileWidget();
             }
           } else {
-            return Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor),
+            return const Center(
+              child: loadingSpinkit
             );
           }
         });

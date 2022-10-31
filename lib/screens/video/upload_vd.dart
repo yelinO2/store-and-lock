@@ -106,7 +106,8 @@ class _UploadVideosState extends State<UploadVideos> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 String fileName = snapshot.data!.docs[index]['fileName'];
-                final Uri url = Uri.parse(snapshot.data!.docs[index]['downloadURL']);
+                final Uri url =
+                    Uri.parse(snapshot.data!.docs[index]['downloadURL']);
 
                 return FileList(fileName: fileName, url: url);
               },
@@ -115,11 +116,7 @@ class _UploadVideosState extends State<UploadVideos> {
             return noFileWidget();
           }
         } else {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
-            ),
-          );
+          return const Center(child: loadingSpinkit);
         }
       },
     );

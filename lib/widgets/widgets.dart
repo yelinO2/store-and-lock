@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+const uploadSpinkit = SpinKitPouringHourGlassRefined(
+  color: Colors.amberAccent,
+  size: 60,
+);
+
+const loadingSpinkit = SpinKitFadingCircle(
+  color: Colors.amberAccent,
+);
+
+const uploadingText = Text(
+  'Uploading.....',
+  style: TextStyle(color: Colors.white, fontSize: 16),
+);
 
 void nextScreen(context, page) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => page));
@@ -27,7 +41,7 @@ void showSnackBar(context, color, message) {
     SnackBar(
       content: Text(
         message,
-        style: const TextStyle(fontSize: 14),
+        style: const TextStyle(fontSize: 14, color: Colors.white),
       ),
       backgroundColor: color,
       duration: const Duration(seconds: 2),
