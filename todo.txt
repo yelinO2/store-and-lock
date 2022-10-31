@@ -1,0 +1,3 @@
+- download and delete file from firebase
+- home screen ui
+

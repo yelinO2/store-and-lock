@@ -2,9 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
-
 import 'package:store_and_lock/services/database_service.dart';
-
 import '../../widgets/widgets.dart';
 
 class SelectImage extends StatefulWidget {

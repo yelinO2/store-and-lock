@@ -53,10 +53,8 @@ class _SignUpState extends State<SignUp> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
-              ),
+          ? const Center(
+              child: loadingSpinkit,
             )
           : SingleChildScrollView(
               child: Form(
@@ -119,7 +117,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                               const Spacer(),
                               TextFormField(
-                              style: const TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                                 decoration: textInputDecoration.copyWith(
                                   labelText: 'Please enter your username',
                                   prefixIcon: Icon(
@@ -168,7 +166,6 @@ class _SignUpState extends State<SignUp> {
                               const Spacer(),
                               TextFormField(
                                 style: const TextStyle(color: Colors.white),
-                              
                                 obscureText: hidePassword,
                                 decoration: textInputDecoration.copyWith(
                                   prefixIcon: Icon(

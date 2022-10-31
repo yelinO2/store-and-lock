@@ -48,7 +48,7 @@ class _FileListState extends State<FileList> {
   Future<void> lauchURL() async {
     final Uri url = widget.url;
 
-    if (!await launchUrl(url, mode: LaunchMode.inAppWebView)) {
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw 'Could not launch $url';
     }
   }

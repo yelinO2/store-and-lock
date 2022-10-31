@@ -42,18 +42,56 @@ class _SetPasscodeState extends State<SetPasscode> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(title: const Text('Set Passcode')),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('Please set passcode to continue'),
-          TextButton(
-              onPressed: () {
-                setPasscode();
-              },
-              child: const Text('Set passcode'))
-        ],
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Spacer(),
+              const Text(
+                'Welcome !',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              ClipRRect(
+                child: Image.asset(
+                  'images/pin.png',
+                  height: size.height * 0.3,
+                  width: size.width,
+                ),
+              ),
+              const Spacer(),
+              const Text(
+                'Please set passcode to continue',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+              const Spacer(),
+              ElevatedButton(
+                onPressed: () {
+                  setPasscode();
+                },
+                child: const Text(
+                  'Set passcode',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+        ),
       ),
     );
   }

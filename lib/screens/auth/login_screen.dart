@@ -58,10 +58,8 @@ class _LoginState extends State<Login> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
-              ),
+          ? const Center(
+             child: loadingSpinkit,
             )
           : SingleChildScrollView(
               child: Form(

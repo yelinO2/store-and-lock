@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:store_and_lock/constant/constants.dart';
 import 'package:store_and_lock/firebase_options.dart';
 import 'package:store_and_lock/helper/helper_funs.dart';
+
 import 'package:store_and_lock/screens/auth/passcode_scren.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -66,7 +67,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(
           brightness: Brightness.dark,
-          primaryColor: Colors.green,
+          primaryColor: Colors.amber,
           textTheme: GoogleFonts.robotoTextTheme(Theme.of(context).textTheme)),
       home: isSignedIn ? const PasscodeScreen() : const SignUp(),
     );
