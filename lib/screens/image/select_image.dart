@@ -117,6 +117,7 @@ class _SelectImageState extends State<SelectImage> {
           upload = false;
         });
         showSnackBar(context, Colors.greenAccent, "Upload Complete");
+        Navigator.pop(context);
       });
     }
   }

@@ -17,10 +17,10 @@ class UploadImage extends StatefulWidget {
 class _UploadImageState extends State<UploadImage> {
   Stream<QuerySnapshot>? images;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+  String collection = 'images';
 
   getImages() {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-    DatabaseService().getImages(uid).then((value) {
+    DatabaseService().getFiles(uid, collection).then((value) {
       setState(() {
         images = value;
       });

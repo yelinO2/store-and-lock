@@ -150,12 +150,12 @@ class _UploadFilesState extends State<UploadFiles> {
         file,
         collection,
         platformFile.name,
-      )
-          .whenComplete(() {
+      ).whenComplete(() {
         setState(() {
           upload = false;
         });
         showSnackBar(context, Colors.greenAccent, "Upload Complete");
+        Navigator.pop(context);
       });
     }
   }
