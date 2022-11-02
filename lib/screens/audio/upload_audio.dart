@@ -91,7 +91,10 @@ class _UploadAudioState extends State<UploadAudio> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text("No file to show, tap to add file")
+            const Text(
+              "No file to show, tap to add file",
+              style: TextStyle(color: Colors.white),
+            ),
           ],
         ),
       ),
@@ -120,9 +123,7 @@ class _UploadAudioState extends State<UploadAudio> {
             return noFileWidget();
           }
         } else {
-          return const Center(
-              child: loadingSpinkit
-            );
+          return const Center(child: loadingSpinkit);
         }
       },
     );

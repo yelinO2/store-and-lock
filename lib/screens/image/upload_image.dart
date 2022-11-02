@@ -67,11 +67,13 @@ class _UploadImageState extends State<UploadImage> {
                   ),
                   itemBuilder: (context, index) {
                     String url = snapshot.data!.docs[index]['downloadURL'];
+                    String fileName = snapshot.data!.docs[index]['fileName'];
                     return GestureDetector(
                       onTap: () {
                         nextScreen(
                             context,
-                            OpenImage(
+                            ViewImage(
+                              fileName: fileName,
                               url: url,
                               heroTag: index,
                             ));
@@ -91,9 +93,7 @@ class _UploadImageState extends State<UploadImage> {
               return noFileWidget();
             }
           } else {
-            return const Center(
-              child: loadingSpinkit
-            );
+            return const Center(child: loadingSpinkit);
           }
         });
   }
@@ -114,7 +114,10 @@ class _UploadImageState extends State<UploadImage> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text("No image to show, tap to add image")
+            const Text(
+              "No image to show, tap to add image",
+              style: TextStyle(color: Colors.white),
+            )
           ],
         ),
       ),

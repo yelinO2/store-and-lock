@@ -89,7 +89,10 @@ class _UploadVideosState extends State<UploadVideos> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text("No file to show, tap to add file")
+            const Text(
+              "No file to show, tap to add file",
+              style: TextStyle(color: Colors.white),
+            ),
           ],
         ),
       ),

@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 
-class OpenImage extends StatefulWidget {
+class ViewImage extends StatefulWidget {
   final String url;
   final int heroTag;
-  const OpenImage({
-    super.key,
-    required this.url,
-    required this.heroTag,
-  });
+  final String fileName;
+  const ViewImage(
+      {super.key,
+      required this.url,
+      required this.heroTag,
+      required this.fileName});
 
   @override
-  State<OpenImage> createState() => _OpenImageState();
+  State<ViewImage> createState() => _ViewImageState();
 }
 
-class _OpenImageState extends State<OpenImage> {
+class _ViewImageState extends State<ViewImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Photo'),
+        title: Text(widget.fileName),
         actions: [
           IconButton(
             onPressed: () {},

@@ -1,0 +1,4 @@
+- download and delete file from firebase
+- home screen ui
+- add logout button
+- double check everything

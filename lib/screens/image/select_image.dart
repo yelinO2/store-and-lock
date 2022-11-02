@@ -50,7 +50,7 @@ class _SelectImageState extends State<SelectImage> {
               ),
               itemCount: platformFiles.length + 1,
               itemBuilder: (context, index) {
-                return index == 0
+                return index == platformFiles.length
                     ? Center(
                         child: IconButton(
                           onPressed: () {
@@ -61,7 +61,7 @@ class _SelectImageState extends State<SelectImage> {
                         ),
                       )
                     : Image.file(
-                        File(platformFiles[index - 1].path!),
+                        File(platformFiles[index].path!),
                         fit: BoxFit.cover,
                       );
               },

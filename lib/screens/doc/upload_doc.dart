@@ -64,7 +64,8 @@ class _UploadDocState extends State<UploadDoc> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   String docName = snapshot.data!.docs[index]['fileName'];
-                  final Uri url = Uri.parse(snapshot.data!.docs[index]['downloadURL']);
+                  final Uri url =
+                      Uri.parse(snapshot.data!.docs[index]['downloadURL']);
 
                   return FileList(fileName: docName, url: url);
                 },
@@ -73,9 +74,7 @@ class _UploadDocState extends State<UploadDoc> {
               return noFileWidget();
             }
           } else {
-            return const Center(
-              child: loadingSpinkit
-            );
+            return const Center(child: loadingSpinkit);
           }
         });
   }
@@ -132,7 +131,10 @@ class _UploadDocState extends State<UploadDoc> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text("No file to show, tap to add file")
+            const Text(
+              "No file to show, tap to add file",
+              style: TextStyle(color: Colors.white),
+            ),
           ],
         ),
       ),
