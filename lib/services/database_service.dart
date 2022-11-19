@@ -44,6 +44,20 @@ class DatabaseService {
         .add({'fileName': fileName, 'downloadURL': downloadURL});
   }
 
+  Future deleteFile(
+    String uid,
+    String path,
+    String fileName,
+    String collection,
+    String doc,
+  ) async {
+    Reference ref =
+        FirebaseStorage.instance.ref().child('$uid/$path').child(fileName);
+
+    await ref.delete().whenComplete(
+        () => userCollection.doc().collection(collection).doc(doc).delete());
+  }
+
   Future getFiles(String uid, String collection) async {
     return userCollection.doc(uid).collection(collection).snapshots();
   }
