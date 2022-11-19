@@ -8,6 +8,8 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
 
+  final storageRef = FirebaseStorage.instance.ref();
+
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   Future savingUserData(
@@ -41,7 +43,8 @@ class DatabaseService {
         .collection('users')
         .doc(uid)
         .collection(collection)
-        .add({'fileName': fileName, 'downloadURL': downloadURL});
+        .doc(fileName)
+        .set({'fileName': fileName, 'downloadURL': downloadURL});
   }
 
   Future deleteFile(
@@ -51,11 +54,10 @@ class DatabaseService {
     String collection,
     String doc,
   ) async {
-    Reference ref =
-        FirebaseStorage.instance.ref().child('$uid/$path').child(fileName);
+    final ref = storageRef.child('$uid/$path/$fileName');
 
     await ref.delete().whenComplete(
-        () => userCollection.doc().collection(collection).doc(doc).delete());
+        () => userCollection.doc(uid).collection(collection).doc(doc).delete());
   }
 
   Future getFiles(String uid, String collection) async {

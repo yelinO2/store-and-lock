@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
+import 'package:store_and_lock/services/database_service.dart';
+
 import 'package:store_and_lock/widgets/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 
 class FileList extends StatefulWidget {
+  final String uid;
+  final String collection;
+  final String doc;
+  final String path;
   final String fileName;
   final Uri url;
-  const FileList({super.key, required this.fileName, required this.url});
+  const FileList({
+    super.key,
+    required this.fileName,
+    required this.url,
+    required this.collection,
+    required this.doc,
+    required this.path,
+    required this.uid,
+  });
 
   @override
   State<FileList> createState() => _FileListState();
@@ -63,8 +77,19 @@ class _FileListState extends State<FileList> {
                   ),
                   TextButton(
                     onPressed: () async {
-                      showSnackBar(context, Colors.red, 'Item deleted');
-                      Navigator.pop(context);
+                      try {
+                        DatabaseService().deleteFile(
+                          widget.uid,
+                          widget.fileName,
+                          widget.collection,
+                          widget.doc,
+                          widget.path,
+                        );
+                        showSnackBar(context, Colors.red, 'Item deleted');
+                        Navigator.pop(context);
+                      } catch (e) {
+                        showSnackBar(context, Colors.red, e);
+                      }
                     },
                     child: const Text(
                       'Delete',

@@ -19,6 +19,7 @@ class _UploadAudioState extends State<UploadAudio> {
   Stream<QuerySnapshot>? audio;
   final uid = FirebaseAuth.instance.currentUser!.uid;
   String collection = 'audio';
+  String path = "audio";
 
   getAudio() {
     DatabaseService().getFiles(uid, collection).then((value) {
@@ -68,8 +69,8 @@ class _UploadAudioState extends State<UploadAudio> {
       UploadFiles(
         platformFiles: files,
         onOpenedFile: openFile,
-        path: "audio",
-        collection: "audio",
+        path: path,
+        collection: collection,
       ));
 
   void openFile(PlatformFile file) {
@@ -115,7 +116,11 @@ class _UploadAudioState extends State<UploadAudio> {
                     Uri.parse(snapshot.data!.docs[index]['downloadURL']);
                 return FileList(
                   fileName: fileName,
-                  url: url,
+                    url: url,
+                    uid: uid,
+                    collection: collection,
+                    doc: fileName,
+                    path: path,
                 );
               },
             );

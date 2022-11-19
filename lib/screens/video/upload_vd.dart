@@ -19,6 +19,7 @@ class _UploadVideosState extends State<UploadVideos> {
   Stream<QuerySnapshot>? video;
   final uid = FirebaseAuth.instance.currentUser!.uid;
   String collection = 'videos';
+  String path = "videos";
   getVd() {
     DatabaseService().getFiles(uid, collection).then((value) {
       setState(() {
@@ -65,8 +66,8 @@ class _UploadVideosState extends State<UploadVideos> {
       UploadFiles(
         platformFiles: files,
         onOpenedFile: openFile,
-        path: "videos",
-        collection: "videos",
+        path: path,
+        collection: collection,
       ));
 
   void openFile(PlatformFile file) {
@@ -111,7 +112,14 @@ class _UploadVideosState extends State<UploadVideos> {
                 final Uri url =
                     Uri.parse(snapshot.data!.docs[index]['downloadURL']);
 
-                return FileList(fileName: fileName, url: url);
+                return FileList(
+                  fileName: fileName,
+                  url: url,
+                  uid: uid,
+                  collection: collection,
+                  doc: fileName,
+                  path: path,
+                );
               },
             );
           } else {

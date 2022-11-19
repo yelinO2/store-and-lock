@@ -18,7 +18,9 @@ class UploadDoc extends StatefulWidget {
 class _UploadDocState extends State<UploadDoc> {
   Stream<QuerySnapshot>? docs;
   final uid = FirebaseAuth.instance.currentUser!.uid;
+
   String collection = 'Documents';
+  String path = "Documents";
 
   getDoc() {
     DatabaseService().getFiles(uid, collection).then((value) {
@@ -67,7 +69,14 @@ class _UploadDocState extends State<UploadDoc> {
                   final Uri url =
                       Uri.parse(snapshot.data!.docs[index]['downloadURL']);
 
-                  return FileList(fileName: docName, url: url);
+                  return FileList(
+                    fileName: docName,
+                    url: url,
+                    uid: uid,
+                    collection: collection,
+                    doc: docName,
+                    path: path,
+                  );
                 },
               );
             } else {
@@ -108,8 +117,8 @@ class _UploadDocState extends State<UploadDoc> {
       UploadFiles(
         platformFiles: files,
         onOpenedFile: openFile,
-        path: "Documents",
-        collection: "Documents",
+        path: path,
+        collection: collection,
       ));
 
   void openFile(PlatformFile file) {
