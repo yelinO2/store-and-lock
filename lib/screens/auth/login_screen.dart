@@ -4,14 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:store_and_lock/screens/auth/passcode/enter_passcode.dart';
-import 'package:store_and_lock/screens/auth/passcode_scren.dart';
+import 'package:store_and_lock/screens/auth/passcode/set_passcode.dart';
 import 'package:store_and_lock/widgets/widgets.dart';
 import '../../constant/text.dart';
 import '../../helper/helper_funs.dart';
 import '../../services/auth_service.dart';
 import '../../services/database_service.dart';
-import '../home_screen.dart';
+
 import 'register_screen.dart';
 
 class Login extends StatefulWidget {
@@ -43,7 +42,7 @@ class _LoginState extends State<Login> {
           await HelperFunctions.saveUserLoggedinStatus(true);
           await HelperFunctions.saveUserEmail(email);
           await HelperFunctions.saveUsername(snapshot.docs[0]['fullName']);
-          removeAndReplace(context, const EnterPasscode());
+          removeAndReplace(context, const SetPasscode());
         } else {
           showSnackBar(context, Colors.red, value);
           setState(() {
