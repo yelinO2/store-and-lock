@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:store_and_lock/widgets/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
@@ -15,8 +17,72 @@ class FileList extends StatefulWidget {
 class _FileListState extends State<FileList> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => lauchURL(),
+    return FocusedMenuHolder(
+      menuWidth: MediaQuery.of(context).size.width * 0.5,
+      menuItems: [
+        FocusedMenuItem(
+          title: const Text("Downdoad"),
+          trailingIcon: const Icon(
+            Icons.download_for_offline,
+            color: Colors.black,
+          ),
+          onPressed: () =>
+              showSnackBar(context, Colors.grey, 'Downloading....'),
+        ),
+        FocusedMenuItem(
+          title: const Text(
+            "Delete",
+            style: TextStyle(color: Colors.white),
+          ),
+          trailingIcon: const Icon(
+            Icons.delete_outline,
+            color: Colors.white,
+          ),
+          backgroundColor: Colors.red,
+          onPressed: () => showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.white),
+                ),
+                content: const Text(
+                  'Delete permanently?',
+                  style: TextStyle(color: Colors.white),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      showSnackBar(context, Colors.red, 'Item deleted');
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Delete',
+                      style: TextStyle(
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
+      blurBackgroundColor: Colors.blueGrey,
+      menuOffset: 10,
+      openWithTap: false,
+      onPressed: () => lauchURL(),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
         child: ListTile(

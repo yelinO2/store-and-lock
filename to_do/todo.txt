@@ -1,4 +1,6 @@
 - download and delete file from firebase
+- focused menu for all folders
+- error occurs when existing user login, could be from saved passcode
 
 
 - double check everything

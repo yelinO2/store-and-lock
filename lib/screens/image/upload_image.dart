@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:store_and_lock/screens/image/select_image.dart';
 import 'package:store_and_lock/screens/image/view_image.dart';
 import 'package:store_and_lock/services/database_service.dart';
-
+import 'package:focused_menu/focused_menu.dart';
 import 'package:store_and_lock/widgets/widgets.dart';
 
 class UploadImage extends StatefulWidget {
@@ -68,18 +69,83 @@ class _UploadImageState extends State<UploadImage> {
                   itemBuilder: (context, index) {
                     String url = snapshot.data!.docs[index]['downloadURL'];
                     String fileName = snapshot.data!.docs[index]['fileName'];
-                    return GestureDetector(
-                      onTap: () {
-                        nextScreen(
-                            context,
-                            ViewImage(
-                              fileName: fileName,
-                              url: url,
-                              heroTag: index,
-                            ));
-                      },
-                      child: Hero(
-                        tag: "image $index",
+                    return Hero(
+                      tag: "image $index",
+                      child: FocusedMenuHolder(
+                        menuWidth: MediaQuery.of(context).size.width * 0.5,
+                        menuItems: [
+                          FocusedMenuItem(
+                            title: const Text("Downdoad"),
+                            trailingIcon: const Icon(
+                              Icons.download_for_offline,
+                              color: Colors.black,
+                            ),
+                            onPressed: () => showSnackBar(
+                                context, Colors.grey, 'Downloading....'),
+                          ),
+                          FocusedMenuItem(
+                            title: const Text(
+                              "Delete",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            trailingIcon: const Icon(
+                              Icons.delete_outline,
+                              color: Colors.white,
+                            ),
+                            backgroundColor: Colors.red,
+                            onPressed: () => showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text(
+                                    'Delete',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  content: const Text(
+                                    'Delete permanently?',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        showSnackBar(context, Colors.red,
+                                            'Item deleted');
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        'Delete',
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                        blurBackgroundColor: Colors.blueGrey,
+                        menuOffset: 10,
+                        openWithTap: false,
+                        onPressed: () {
+                          nextScreen(
+                              context,
+                              ViewImage(
+                                fileName: fileName,
+                                url: url,
+                                heroTag: index,
+                              ));
+                        },
                         child: Image.network(
                           url,
                           fit: BoxFit.cover,
