@@ -54,11 +54,19 @@ class DatabaseService {
     });
   }
 
-  Future<void> deleteFiles(
-      String uid, String fullPath, String collectionPath, String docName) async {
-    await FirebaseStorage.instance.ref(fullPath).delete().whenComplete(() {
-      userCollection.doc(uid).collection(collectionPath).doc(docName).delete();
-    });
+  Future<void> deleteFiles(String uid, String fullPath, String collectionPath,
+      String docName) async {
+    final ref = storageRef.child(fullPath);
+   
+   
+    print('this is fullPath from database service >>>>>>>>>>>>');
+    print(fullPath);
+
+    await ref.delete().whenComplete(() => userCollection
+        .doc(uid)
+        .collection(collectionPath)
+        .doc(docName)
+        .delete());
   }
 
   Future getFiles(String uid, String collection) async {

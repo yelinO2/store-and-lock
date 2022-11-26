@@ -34,11 +34,14 @@ class FileList extends StatefulWidget {
 
 class _FileListState extends State<FileList> {
   Future delete() async {
+    print("fullpath from file list <---------------------------->");
+    print(widget.fullPath);
+
     await DatabaseService().deleteFiles(
+      widget.uid,
       widget.fullPath,
       widget.collectionPath,
       widget.docName,
-      widget.uid,
     );
     setState(() {});
   }
@@ -91,12 +94,14 @@ class _FileListState extends State<FileList> {
                   ),
                   TextButton(
                     onPressed: () async {
-                      await delete().whenComplete(() => showSnackBar(
-                            context,
-                            Colors.red,
-                            'Item deleted successfully',
-                          ));
-                      Navigator.pop(context);
+                      await delete().whenComplete(() {
+                        showSnackBar(
+                          context,
+                          Colors.red,
+                          "Item deleted successfully",
+                        );
+                        Navigator.pop(context);
+                      });
                     },
                     child: const Text(
                       'Delete',

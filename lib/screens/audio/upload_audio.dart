@@ -113,6 +113,10 @@ class _UploadAudioState extends State<UploadAudio> {
               itemBuilder: (context, index) {
                 String fileName = snapshot.data!.docs[index]['fileName'];
                 final String fullPath = snapshot.data!.docs[index]['fullPath'];
+               
+                print("fullPath from upload audio--------------------");
+                print(fullPath);
+               
                 final Uri url =
                     Uri.parse(snapshot.data!.docs[index]['downloadURL']);
                 return FileList(
