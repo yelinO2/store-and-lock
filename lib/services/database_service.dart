@@ -33,31 +33,32 @@ class DatabaseService {
   Future uploadFile(String uid, String path, dynamic file, String collection,
       String fileName) async {
     String? downloadURL;
+    String? fullPath;
+
     Reference ref =
         FirebaseStorage.instance.ref().child('$uid/$path').child(fileName);
 
     await ref.putFile(file);
 
     downloadURL = await ref.getDownloadURL();
+    fullPath = ref.fullPath;
     await firebaseFirestore
         .collection('users')
         .doc(uid)
         .collection(collection)
         .doc(fileName)
-        .set({'fileName': fileName, 'downloadURL': downloadURL});
+        .set({
+      'fileName': fileName,
+      'downloadURL': downloadURL,
+      'fullPath': fullPath
+    });
   }
 
-  Future deleteFile(
-    String uid,
-    String path,
-    String fileName,
-    String collection,
-    String doc,
-  ) async {
-    final ref = storageRef.child('$uid/$path/$fileName');
-
-    await ref.delete().whenComplete(
-        () => userCollection.doc(uid).collection(collection).doc(doc).delete());
+  Future<void> deleteFiles(
+      String uid, String fullPath, String collectionPath, String docName) async {
+    await FirebaseStorage.instance.ref(fullPath).delete().whenComplete(() {
+      userCollection.doc(uid).collection(collectionPath).doc(docName).delete();
+    });
   }
 
   Future getFiles(String uid, String collection) async {

@@ -66,17 +66,18 @@ class _UploadDocState extends State<UploadDoc> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   String docName = snapshot.data!.docs[index]['fileName'];
-                  final Uri url =
-                      Uri.parse(snapshot.data!.docs[index]['downloadURL']);
-
-                  return FileList(
-                    fileName: docName,
-                    url: url,
-                    uid: uid,
-                    collection: collection,
-                    doc: docName,
-                    path: path,
-                  );
+                  final String fullPath = snapshot.data!.docs[index]['fullPath'];
+                final Uri url =
+                    Uri.parse(snapshot.data!.docs[index]['downloadURL']);
+                return FileList(
+                  uid: uid,
+                  collectionPath: collection,
+                  docName: docName,
+                  fullPath: fullPath,
+                  fileName: docName,
+                  url: url,
+                  path: path,
+                );
                 },
               );
             } else {

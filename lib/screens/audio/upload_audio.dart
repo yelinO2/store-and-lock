@@ -112,15 +112,17 @@ class _UploadAudioState extends State<UploadAudio> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 String fileName = snapshot.data!.docs[index]['fileName'];
+                final String fullPath = snapshot.data!.docs[index]['fullPath'];
                 final Uri url =
                     Uri.parse(snapshot.data!.docs[index]['downloadURL']);
                 return FileList(
+                  uid: uid,
+                  collectionPath: collection,
+                  docName: fileName,
+                  fullPath: fullPath,
                   fileName: fileName,
-                    url: url,
-                    uid: uid,
-                    collection: collection,
-                    doc: fileName,
-                    path: path,
+                  url: url,
+                  path: path,
                 );
               },
             );
