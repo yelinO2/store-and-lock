@@ -29,7 +29,12 @@ class _UploadDocState extends State<UploadDoc> {
       });
     });
   }
-
+  @override
+  void setState(VoidCallback fn) {
+    if(mounted){
+      super.setState(fn);
+    }
+  }
   @override
   void initState() {
     getDoc();

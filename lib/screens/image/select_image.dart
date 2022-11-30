@@ -17,6 +17,13 @@ class _SelectImageState extends State<SelectImage> {
   bool upload = false;
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -117,7 +124,6 @@ class _SelectImageState extends State<SelectImage> {
           upload = false;
         });
         showSnackBar(context, Colors.greenAccent, "Upload Complete");
-        Navigator.pop(context);
       });
     }
   }

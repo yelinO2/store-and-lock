@@ -52,7 +52,12 @@ class _LoginState extends State<Login> {
       });
     }
   }
-
+  @override
+  void setState(VoidCallback fn) {
+    if(mounted){
+      super.setState(fn);
+    }
+  }
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DatabaseService {
   final String? uid;
@@ -54,11 +57,18 @@ class DatabaseService {
     });
   }
 
+  Future<void> downloadFile(String fullPath, String fileName) async {
+    final ref = storageRef.child(fullPath);
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File('${dir.path}/ $fileName');
+
+    await ref.writeToFile(file);
+  }
+
   Future<void> deleteFiles(String uid, String fullPath, String collectionPath,
       String docName) async {
     final ref = storageRef.child(fullPath);
-   
-   
+
     print('this is fullPath from database service >>>>>>>>>>>>');
     print(fullPath);
 

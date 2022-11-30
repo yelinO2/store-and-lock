@@ -66,7 +66,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
     if (isEmailVerified) timer?.cancel();
   }
-
+  @override
+  void setState(VoidCallback fn) {
+    if(mounted){
+      super.setState(fn);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

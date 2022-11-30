@@ -25,7 +25,6 @@ class _EnterPasscodeState extends State<EnterPasscode> {
         passcode = value!;
       });
     });
-    
   }
 
   @override
@@ -43,9 +42,7 @@ class _EnterPasscodeState extends State<EnterPasscode> {
               keyPadConfig: const KeyPadConfig(
                 clearOnLongPressed: true,
               ),
-              didCancelled: () {
-              
-              },
+              didCancelled: () {},
               didUnlocked: () {
                 removeAndReplace(context, const HomeScreen());
               }),

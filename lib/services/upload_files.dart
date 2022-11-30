@@ -101,7 +101,7 @@ class _UploadFilesState extends State<UploadFiles> {
                 alignment: Alignment.center,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: Colors.cyanAccent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -150,12 +150,14 @@ class _UploadFilesState extends State<UploadFiles> {
         file,
         collection,
         platformFile.name,
-      ).whenComplete(() {
-        setState(() {
-          upload = false;
-        });
+      )
+          .whenComplete(() {
+        if (mounted) {
+          setState(() {
+            upload = false;
+          });
+        }
         showSnackBar(context, Colors.greenAccent, "Upload Complete");
-        Navigator.pop(context);
       });
     }
   }

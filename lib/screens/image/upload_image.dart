@@ -1,7 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:focused_menu/modals.dart';
+
 import 'package:store_and_lock/screens/image/select_image.dart';
 import 'package:store_and_lock/screens/image/view_image.dart';
 import 'package:store_and_lock/services/database_service.dart';
@@ -19,6 +24,7 @@ class _UploadImageState extends State<UploadImage> {
   Stream<QuerySnapshot>? images;
   final uid = FirebaseAuth.instance.currentUser!.uid;
   String collection = 'images';
+  bool downloading = false;
 
   getImages() {
     DatabaseService().getFiles(uid, collection).then((value) {
@@ -35,10 +41,50 @@ class _UploadImageState extends State<UploadImage> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  Future downloadImage(String fullPath, String fileName) async {
+    await DatabaseService()
+        .downloadFile(
+      fullPath,
+      fileName,
+    )
+        .whenComplete(() {
+      setState(() {
+        downloading = false;
+      });
+      showSnackBar(
+        context,
+        Colors.green,
+        "$fileName downloaded successfully",
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Images')),
-      body: showImages(),
+      body: Stack(
+        children: [
+          showImages(),
+          downloading
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      downloadSpinkit,
+                    ],
+                  ),
+                )
+              : Container(),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           nextScreen(context, const SelectImage());
@@ -51,7 +97,7 @@ class _UploadImageState extends State<UploadImage> {
     );
   }
 
-  showImages() {
+  Widget showImages() {
     return StreamBuilder(
         stream: images,
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -69,6 +115,8 @@ class _UploadImageState extends State<UploadImage> {
                   itemBuilder: (context, index) {
                     String url = snapshot.data!.docs[index]['downloadURL'];
                     String fileName = snapshot.data!.docs[index]['fileName'];
+                    final String fullPath =
+                        snapshot.data!.docs[index]['fullPath'];
                     return Hero(
                       tag: "image $index",
                       child: FocusedMenuHolder(
@@ -80,8 +128,12 @@ class _UploadImageState extends State<UploadImage> {
                               Icons.download_for_offline,
                               color: Colors.black,
                             ),
-                            onPressed: () => showSnackBar(
-                                context, Colors.grey, 'Downloading....'),
+                            onPressed: () async {
+                              setState(() {
+                                downloading = true;
+                              });
+                              await downloadImage(fullPath, fileName);
+                            },
                           ),
                           FocusedMenuItem(
                             title: const Text(
@@ -117,9 +169,19 @@ class _UploadImageState extends State<UploadImage> {
                                     ),
                                     TextButton(
                                       onPressed: () async {
-                                        showSnackBar(context, Colors.red,
-                                            'Item deleted');
-                                        Navigator.pop(context);
+                                        await DatabaseService()
+                                            .deleteFiles(
+                                          uid,
+                                          fullPath,
+                                          collection,
+                                          fileName,
+                                        )
+                                            .whenComplete(() {
+                                          showSnackBar(context, Colors.red,
+                                              "Image deleted successfully");
+                                          Navigator.pop(context);
+                                        });
+                                        setState(() {});
                                       },
                                       child: const Text(
                                         'Delete',
@@ -139,12 +201,16 @@ class _UploadImageState extends State<UploadImage> {
                         openWithTap: false,
                         onPressed: () {
                           nextScreen(
-                              context,
-                              ViewImage(
-                                fileName: fileName,
-                                url: url,
-                                heroTag: index,
-                              ));
+                            context,
+                            ViewImage(
+                              fileName: fileName,
+                              url: url,
+                              heroTag: index,
+                              uid: uid,
+                              collectionPath: collection,
+                              fullPath: fullPath,
+                            ),
+                          );
                         },
                         child: Image.network(
                           url,

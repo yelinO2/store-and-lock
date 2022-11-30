@@ -1,23 +1,60 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:store_and_lock/constant/icon_menu.dart';
 
 import 'package:store_and_lock/widgets/widgets.dart';
 
+import '../../services/database_service.dart';
+
 class ViewImage extends StatefulWidget {
   final String url;
   final int heroTag;
   final String fileName;
-  const ViewImage(
-      {super.key,
-      required this.url,
-      required this.heroTag,
-      required this.fileName});
+  final String collectionPath;
+  final String uid;
+  final String fullPath;
+  const ViewImage({
+    super.key,
+    required this.url,
+    required this.heroTag,
+    required this.fileName,
+    required this.collectionPath,
+    required this.fullPath,
+    required this.uid,
+  });
 
   @override
   State<ViewImage> createState() => _ViewImageState();
 }
 
 class _ViewImageState extends State<ViewImage> {
+  bool downloading = false;
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  Future download() async {
+    await DatabaseService()
+        .downloadFile(
+      widget.fullPath,
+      widget.fileName,
+    )
+        .whenComplete(() {
+      setState(() {
+        downloading = false;
+      });
+      showSnackBar(
+        context,
+        Colors.green,
+        "${widget.fileName} downloaded successfully",
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +68,10 @@ class _ViewImageState extends State<ViewImage> {
             onSelected: (value) {
               switch (value) {
                 case IconsMenu.download:
-                  showSnackBar(context, Colors.grey, 'Downleading...');
+                  download();
+                  setState(() {
+                    downloading = true;
+                  });
                   break;
                 case IconsMenu.delete:
                   showDialog(
@@ -58,7 +98,20 @@ class _ViewImageState extends State<ViewImage> {
                           ),
                           TextButton(
                             onPressed: () async {
-                              showSnackBar(context, Colors.red, 'Item deleted');
+                              await DatabaseService()
+                                  .deleteFiles(
+                                widget.uid,
+                                widget.fullPath,
+                                widget.collectionPath,
+                                widget.fileName,
+                              )
+                                  .whenComplete(() {
+                                showSnackBar(context, Colors.red,
+                                    "Image deleted successfully");
+                                Navigator.pop(context);
+                              });
+                              Navigator.pop(context);
+                              setState(() {});
                             },
                             child: const Text(
                               'Delete',
@@ -92,14 +145,29 @@ class _ViewImageState extends State<ViewImage> {
           ),
         ],
       ),
-      body: Center(
-        child: Hero(
-          tag: "image ${widget.heroTag}",
-          child: Image.network(
-            widget.url,
-            fit: BoxFit.fill,
+      body: Stack(
+        children: [
+          Center(
+            child: Hero(
+              tag: "image ${widget.heroTag}",
+              child: Image.network(
+                widget.url,
+                fit: BoxFit.fill,
+              ),
+            ),
           ),
-        ),
+          downloading
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      downloadSpinkit,
+                    ],
+                  ),
+                )
+              : Container(),
+        ],
       ),
     );
   }

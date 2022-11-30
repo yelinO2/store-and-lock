@@ -17,7 +17,7 @@ class _SetPasscodeState extends State<SetPasscode> {
   setPasscode() {
     final inputController = InputController();
     screenLock(
-      digits: 5,
+      digits: 6,
       context: context,
       correctString: passcode,
       confirmation: true,

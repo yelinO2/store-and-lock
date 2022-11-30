@@ -60,6 +60,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,

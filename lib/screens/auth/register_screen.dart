@@ -47,6 +47,13 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {

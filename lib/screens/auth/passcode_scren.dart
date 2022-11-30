@@ -31,6 +31,13 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return setPasscode ? const EnterPasscode() : const SetPasscode();
   }

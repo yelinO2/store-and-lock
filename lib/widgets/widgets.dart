@@ -6,6 +6,11 @@ const uploadSpinkit = SpinKitPouringHourGlassRefined(
   size: 60,
 );
 
+const downloadSpinkit = SpinKitWave(
+  color: Colors.redAccent,
+  size: 40,
+);
+
 const loadingSpinkit = SpinKitFadingCircle(
   color: Colors.amberAccent,
 );
@@ -13,6 +18,11 @@ const loadingSpinkit = SpinKitFadingCircle(
 const uploadingText = Text(
   'Uploading.....',
   style: TextStyle(color: Colors.white, fontSize: 16),
+);
+
+const downloadingText = Text(
+  'Downloading.....',
+  style: TextStyle(color: Colors.red, fontSize: 16),
 );
 
 void nextScreen(context, page) {
@@ -143,5 +153,3 @@ Color getColor(String word) {
   }
   return color;
 }
-
-
